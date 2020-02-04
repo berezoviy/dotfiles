@@ -1,0 +1,6 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =4
+let g:netrw_dirhist_4='/Users/berezovyy/Upwork/beyrep/beyrep-api-server'
+let g:netrw_dirhist_3='/Users/berezovyy/Upwork/beyrep/beyrep-api-server/src'
+let g:netrw_dirhist_2='/Users/berezovyy/Upwork/beyrep/beyrep-api-server/src/jobs'
+let g:netrw_dirhist_1='/Users/berezovyy/Upwork/beyrep/beyrep-api-server/src'
