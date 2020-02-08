@@ -1,10 +1,56 @@
 call plug#begin(expand('~/.config/nvim/plugged'))
 
-  Plug 'neoclide/coc.nvim', {'branch': 'release'}
   Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
   Plug 'junegunn/fzf.vim'
+  
+  :" Visual Plugins
+  Plug 'mhinz/vim-startify'                  | " Startup screen
+  Plug 'nathanaelkane/vim-indent-guides'     | " Show indentation
+  Plug 'neoclide/coc-highlight'              | " Displays hex colors in actual color
+  Plug 'ryanoasis/vim-devicons'              | " Dev icons
+  Plug 'vim-airline/vim-airline'             | " Airline
+  Plug 'vim-airline/vim-airline-themes'      | " Status line
+  Plug 'psliwka/vim-smoothie'                | " Nicer scrolling
+  
+  " Tool Plugins
+  Plug 'dstein64/vim-startuptime'        | " Measure startuptime
+  Plug 'duggiefresh/vim-easydir'         | " Crete files in dirs that don't exist
+  Plug 'inkarkat/vim-ingo-library'       | " Spellcheck dependency
+  Plug 'inkarkat/vim-spellcheck'         | " Spelling errors to quickfix list
+  Plug 'inkarkat/vim-spellcheck'         | " Spelling errors to quickfix list
+
+  " CoC Plugins {{{
+  Plug 'neoclide/coc.nvim',     { 'branch': 'release' }
+  Plug 'neoclide/coc-css',      | " CSS language server
+  Plug 'neoclide/coc-eslint',   | " Eslint integration
+  Plug 'neoclide/coc-html',     | " Html language server
+  Plug 'neoclide/coc-json',     | " JSON language server
+  Plug 'neoclide/coc-lists',    | " Arbitrary lists
+  Plug 'neoclide/coc-pairs',    | " Auto-insert language aware pairs
+  Plug 'neoclide/coc-snippets', | " Provides snippets
+  Plug 'neoclide/coc-tslint',   | " Tslint integration
+  Plug 'neoclide/coc-tsserver', | " TypeScript language server
+  
+  " Code Formatting Plugins {{{
+  Plug 'editorconfig/editorconfig-vim'      | " Import tabs etc from editorconfig
+  Plug 'neoclide/coc-prettier' | " Prettier for COC
+
+  " Syntax Plugins
+  Plug 'sheerun/vim-polyglot'
+  Plug 'ekalinin/dockerfile.vim'     | " Syntax for Dockerfile
+  Plug 'tmux-plugins/vim-tmux'       | " Syntax for Tmux conf files
+
+  Plug 'ayu-theme/ayu-vim'
+  Plug 'morhetz/gruvbox'
+  Plug 'yuki-ycino/fzf-preview.vim'
+  Plug 'bogado/file-line'
+  Plug 'shougo/neomru.vim'
 
 call plug#end()
+
+let ayucolor="mirage" " for mirage version of theme
+colorscheme ayu
+" colorscheme gruvbox
 
 " Hides buffers instead of closing them
 set hidden
@@ -27,6 +73,7 @@ set shiftwidth=2
 " or 'The only match'
 set shortmess+=c
 
+" Backups
 set nobackup
 set nowritebackup
 
@@ -61,8 +108,20 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
+" Open lazygit
+nnoremap <silent> <Leader>' :call OpenTerm('lazygit', 0.8)<CR>
+
+" Save file
+nnoremap <silent> <Leader>w! :write<CR>
+
+" Reload vim config
+nmap <Leader>R :so $MYVIMRC<CR>
+
 " Use K to show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+nmap <Leader>p :FzfPreviewProjectFiles<CR>  
+nmap <Leader>F :FzfPreviewProjectGrep<CR>  
 
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
@@ -123,16 +182,6 @@ set autoread
 
 " Enable line numbers
 set number
-
-" Set backups
-if has('persistent_undo')
-  set undofile
-  set undolevels=3000
-  set undoreload=10000
-endif
-set backupdir=~/.local/share/nvim/backup " Don't put backups in current dir
-set backup
-set noswapfile
 
 let g:fzf_layout = { 'window': 'call CreateCenteredFloatingWindow()' }
 let $FZF_DEFAULT_OPTS="--reverse " " top to bottom
@@ -201,4 +250,40 @@ function! Fzf_dev()
         \ 'down':    '40%',
         \ 'window': 'call CreateCenteredFloatingWindow()'})
 
+endfunction
+function! LayoutTerm(size, orientation) abort
+  let timeout = 16.0
+  let animation_total = 150.0
+  let timer = {
+    \ 'size': a:size,
+    \ 'step': 1,
+    \ 'steps': animation_total / timeout
+  \}
+
+  if a:orientation == 'horizontal'
+    resize 1
+    function! timer.f(timer)
+      execute 'resize ' . string(&lines * self.size * (self.step / self.steps))
+      let self.step += 1
+    endfunction
+  else
+    vertical resize 1
+    function! timer.f(timer)
+      execute 'vertical resize ' . string(&columns * self.size * (self.step / self.steps))
+      let self.step += 1
+    endfunction
+  endif
+  call timer_start(float2nr(timeout), timer.f, {'repeat': float2nr(timer.steps)})
+endfunction
+
+" Open autoclosing terminal, with optional size and orientation
+function! OpenTerm(cmd, ...) abort
+  let orientation = get(a:, 2, 'horizontal')
+  if orientation == 'horizontal'
+    new | wincmd J
+  else
+    vnew | wincmd L
+  endif
+  call LayoutTerm(get(a:, 1, 0.5), orientation)
+  call termopen(a:cmd, {'on_exit': {j,c,e -> execute('if c == 0 | close | endif')}})
 endfunction
