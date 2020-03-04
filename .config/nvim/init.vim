@@ -86,6 +86,8 @@ set cmdheight=2
 
 set updatetime=300
 
+hi CocInfoSign  ctermfg=Blue guifg=#0EBFE9
+
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
 inoremap <silent><expr> <TAB>
@@ -151,8 +153,8 @@ nnoremap <silent> K :call <SID>show_documentation()<CR>
 
 nmap <Leader>p :FzfPreviewProjectFiles<CR>  
 nmap <Leader>F :FzfPreviewProjectGrep<CR>  
+nmap <leader>b :Fern . -reveal=% -drawer<CR>
 
-command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
