@@ -153,7 +153,7 @@ nnoremap <silent> K :call <SID>show_documentation()<CR>
 
 nmap <Leader>p :FzfPreviewProjectFiles<CR>  
 nmap <Leader>F :FzfPreviewProjectGrep<CR>  
-nmap <leader>b :Fern . -reveal=% -drawer<CR>
+nmap <leader>b :Fern . -reveal=% -drawer | :set relativenumber! | :set nonumber<CR>
 
 
 function! s:show_documentation()
