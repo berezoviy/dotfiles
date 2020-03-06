@@ -24,6 +24,7 @@ alias yd="yarn dev"
 alias vi="nvim"
 alias cat="ccat"
 alias c='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+alias rm=gomi
 
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8

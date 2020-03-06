@@ -31,6 +31,7 @@ call plug#begin(expand('~/.config/nvim/plugged'))
   Plug 'honza/vim-snippets'
 
   Plug 'ayu-theme/ayu-vim'
+  Plug 'morhetz/gruvbox'
   Plug 'yuki-ycino/fzf-preview.vim'
   Plug 'bogado/file-line'
   Plug 'shougo/neomru.vim'
@@ -40,8 +41,10 @@ call plug#end()
 
 let g:fern#renderer = "devicons"
 
-let ayucolor="mirage" " for mirage version of theme
-colorscheme ayu
+let ayucolor="light" " for mirage version of theme
+let g:gruvbox_contrast_light="hard"
+set background=light
+colorscheme gruvbox 
 " colorscheme gruvbox
 
 " Hides buffers instead of closing them
@@ -143,7 +146,7 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
 " Save file
-nnoremap <silent> <Leader>w! :write<CR>
+nnoremap <silent> <Leader>w :write<CR>
 
 " Reload vim config
 nmap <Leader>R :so $MYVIMRC<CR>
@@ -154,6 +157,12 @@ nnoremap <silent> K :call <SID>show_documentation()<CR>
 nmap <Leader>p :FzfPreviewProjectFiles<CR>  
 nmap <Leader>F :FzfPreviewProjectGrep<CR>  
 nmap <leader>b :Fern . -reveal=% -drawer<CR>:set norelativenumber nonumber<CR>
+
+" Quicker window movement
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-h> <C-w>h
+nnoremap <C-l> <C-w>l
 
 
 function! s:show_documentation()
