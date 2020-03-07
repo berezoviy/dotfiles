@@ -1,6 +1,7 @@
 export ZSH=$HOME/.oh-my-zsh
 export PATH=/home/linuxbrew/.linuxbrew/bin/python:$PATH
 export PATH=/usr/bin/python3:$PATH
+export PATH="$PATH:`yarn global bin`"
 # export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/extras/CUPTI/lib64
 # export TERM=xterm
 export TERM='xterm-256color'
