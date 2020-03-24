@@ -147,8 +147,13 @@ nmap <silent> gr <Plug>(coc-references)
 
 " Save file
 nnoremap <silent> <Leader>w :write<CR>
-nnoremap <silent> <Leader>q :q<CR>
-nnoremap <C-A> ggVG
+nnoremap <silent> <Leader>q :bd<CR>
+noremap <silent> <Leader>Q :close<CR>
+nnoremap <C-A> ggVG<CR>
+nnoremap <C-S> :write<CR>
+nnoremap <C-Q> :bd<CR>
+nnoremap <C-V> :bp<CR>
+nnoremap <C-F> :bn<CR>
 
 " Reload vim config
 nmap <Leader>R :so $MYVIMRC<CR>
