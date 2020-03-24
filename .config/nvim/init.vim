@@ -147,6 +147,8 @@ nmap <silent> gr <Plug>(coc-references)
 
 " Save file
 nnoremap <silent> <Leader>w :write<CR>
+nnoremap <silent> <Leader>q :q<CR>
+nnoremap <C-A> ggVG
 
 " Reload vim config
 nmap <Leader>R :so $MYVIMRC<CR>
@@ -154,8 +156,8 @@ nmap <Leader>R :so $MYVIMRC<CR>
 " Use K to show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
-nmap <Leader>p :FzfPreviewProjectFiles<CR>  
-nmap <Leader>F :FzfPreviewProjectGrep<CR>  
+nmap <Leader>j :FzfPreviewProjectFiles<CR>  
+nmap <Leader>k :FzfPreviewProjectGrep<CR>  
 nmap <leader>b :Fern . -drawer<CR>:set norelativenumber nonumber<CR>
 
 " Quicker window movement
