@@ -27,8 +27,9 @@ call plug#begin(expand('~/.config/nvim/plugged'))
   Plug 'sheerun/vim-polyglot'
   Plug 'ekalinin/dockerfile.vim'     | " Syntax for Dockerfile
   Plug 'tmux-plugins/vim-tmux'       | " Syntax for Tmux conf files
+  Plug 'alcesleo/vim-uppercase-sql'  | " Uppercase in sql files
 
-  Plug 'honza/vim-snippets'
+  Plug 'SirVer/ultisnips'
 
   Plug 'ayu-theme/ayu-vim'
   Plug 'morhetz/gruvbox'
@@ -193,6 +194,11 @@ nmap <leader>rn <Plug>(coc-rename)
 " Remap for format selected region
 xmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
+
+" Snippets
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<c-l>"
 
 
 " Open the vimrc file anytime
