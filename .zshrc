@@ -29,6 +29,7 @@ alias rm=gomi
 
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
+export BAT_THEME="OneHalfLight"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 

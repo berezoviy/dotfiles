@@ -42,7 +42,6 @@ call plug#end()
 
 let g:fern#renderer = "devicons"
 
-let ayucolor="light" " for mirage version of theme
 let g:gruvbox_contrast_light="hard"
 set background=light
 colorscheme gruvbox 
@@ -156,15 +155,18 @@ nnoremap <C-Q> :bd<CR>
 nnoremap <C-V> :bp<CR>
 nnoremap <C-F> :bn<CR>
 
+" Replace word from 0 register
+nnoremap <C-p> cw<C-r>0<ESC>
+
 " Reload vim config
 nmap <Leader>R :so $MYVIMRC<CR>
 
 " Use K to show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
-nmap <Leader>j :FzfPreviewProjectFiles<CR>  
-nmap <Leader>k :FzfPreviewProjectGrep<CR>  
-nmap <leader>b :Fern . -drawer<CR>:set norelativenumber nonumber<CR>
+nmap <Leader>j :FzfPreviewProjectMruFiles<CR>  
+nmap <Leader>k :FzfPreviewProjectGrep .<CR>  
+nmap <leader>b :Fern . -drawer <CR>:set norelativenumber nonumber<CR>
 
 " Quicker window movement
 nnoremap <C-j> <C-w>j
@@ -203,6 +205,8 @@ let g:UltiSnipsJumpBackwardTrigger="<c-l>"
 
 " Open the vimrc file anytime
 noremap <leader>rc :e ~/.config/nvim/init.vim<CR>
+noremap <leader>rz :e ~/.zshrc<CR>
+noremap <leader>rx :e ~/.config/kitty/kitty.conf<CR>
 
 augroup mygroup
   autocmd!
