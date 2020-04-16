@@ -18,7 +18,7 @@ call plug#begin(expand('~/.config/nvim/plugged'))
   Plug 'duggiefresh/vim-easydir'         | " Crete files in dirs that don't exist
   Plug 'lambdalisue/fern.vim'
   Plug 'lambdalisue/fern-renderer-devicons.vim'
-
+  Plug 'unblevable/quick-scope'
   
   " Code Formatting Plugins {{{
   Plug 'editorconfig/editorconfig-vim'      | " Import tabs etc from editorconfig
@@ -207,6 +207,11 @@ let g:UltiSnipsJumpBackwardTrigger="<c-l>"
 noremap <leader>rc :e ~/.config/nvim/init.vim<CR>
 noremap <leader>rz :e ~/.zshrc<CR>
 noremap <leader>rx :e ~/.config/kitty/kitty.conf<CR>
+
+" Quickscope
+let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
+highlight QuickScopePrimary guifg='#552b8c' gui=underline ctermfg=155 cterm=underline
+highlight QuickScopeSecondary guifg='#a001a0' gui=underline ctermfg=81 cterm=underline
 
 augroup mygroup
   autocmd!
