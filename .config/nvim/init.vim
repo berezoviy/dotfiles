@@ -2,55 +2,57 @@ call plug#begin(expand('~/.config/nvim/plugged'))
 
   Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
   Plug 'junegunn/fzf.vim'
-  
-  :" Visual Plugins
+
+  " Visual Plugins
   Plug 'mhinz/vim-startify'                  | " Startup screen
   Plug 'nathanaelkane/vim-indent-guides'     | " Show indentation
-  Plug 'neoclide/coc-highlight'              | " Displays hex colors in actual color
   Plug 'ryanoasis/vim-devicons'              | " Dev icons
   Plug 'vim-airline/vim-airline'             | " Airline
   Plug 'vim-airline/vim-airline-themes'      | " Status line
   Plug 'psliwka/vim-smoothie'                | " Nicer scrolling
-  
-  " Tool Plugins
-  Plug 'dstein64/vim-startuptime'        | " Measure startuptime
-  Plug 'duggiefresh/vim-easydir'         | " Crete files in dirs that don't exist
-  Plug 'inkarkat/vim-ingo-library'       | " Spellcheck dependency
-  Plug 'inkarkat/vim-spellcheck'         | " Spelling errors to quickfix list
-  Plug 'inkarkat/vim-spellcheck'         | " Spelling errors to quickfix list
 
-  " CoC Plugins {{{
-  Plug 'neoclide/coc.nvim',     { 'branch': 'release' }
-  Plug 'neoclide/coc-css',      | " CSS language server
-  Plug 'neoclide/coc-eslint',   | " Eslint integration
-  Plug 'neoclide/coc-html',     | " Html language server
-  Plug 'neoclide/coc-json',     | " JSON language server
-  Plug 'neoclide/coc-lists',    | " Arbitrary lists
-  Plug 'neoclide/coc-pairs',    | " Auto-insert language aware pairs
-  Plug 'neoclide/coc-snippets', | " Provides snippets
-  Plug 'neoclide/coc-tslint',   | " Tslint integration
-  Plug 'neoclide/coc-tsserver', | " TypeScript language server
-  
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+  " Tool Plugins
+  Plug 'dstein64/vim-startuptime'               | " Measure startuptime
+  Plug 'duggiefresh/vim-easydir'                | " Crete files in dirs that don't exist
+  Plug 'lambdalisue/fern.vim'                   | " Asynchrnonous tree viewer
+  Plug 'lambdalisue/fern-renderer-devicons.vim' | " Dev icons for the tree
+  Plug 'unblevable/quick-scope'                 | " Help with left-right movement
+  Plug 'qpkorr/vim-bufkill'                     | " Help delete or wipe a buffer without closing the window
+  Plug 'tpope/vim-eunuch'                       | " Sugar for the UNIX shell commands
+
   " Code Formatting Plugins {{{
   Plug 'editorconfig/editorconfig-vim'      | " Import tabs etc from editorconfig
-  Plug 'neoclide/coc-prettier' | " Prettier for COC
 
   " Syntax Plugins
   Plug 'sheerun/vim-polyglot'
   Plug 'ekalinin/dockerfile.vim'     | " Syntax for Dockerfile
   Plug 'tmux-plugins/vim-tmux'       | " Syntax for Tmux conf files
+  Plug 'alcesleo/vim-uppercase-sql'  | " Uppercase in sql files
 
-  Plug 'ayu-theme/ayu-vim'
+  Plug 'SirVer/ultisnips'
+
   Plug 'morhetz/gruvbox'
   Plug 'yuki-ycino/fzf-preview.vim'
   Plug 'bogado/file-line'
   Plug 'shougo/neomru.vim'
+  Plug 'ryanoasis/vim-devicons'
+
+  Plug 'mcchrish/nnn.vim'
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
 call plug#end()
 
-let ayucolor="mirage" " for mirage version of theme
-colorscheme ayu
-" colorscheme gruvbox
+let mapleader=";"
+
+let g:fern#renderer = "devicons"
+
+let g:deoplete#enable_at_startup = 1
+
+let g:gruvbox_contrast_light="hard"
+set background=light
+colorscheme gruvbox
 
 " Hides buffers instead of closing them
 set hidden
@@ -64,14 +66,19 @@ set softtabstop=2
 " Indentation amount for < and > commands.
 set shiftwidth=2
 
+" This enables relative line numbering mode. With both number and
+" relativenumber enabled, the current line shows the true line number, while
+" all other lines (above and below) are numbered relative to the current line.
+" This is useful because you can tell, at a glance, what count is needed to
+" jump up or down to a particular line, by {count}k to go up or {count}j to go
+" down.
+set relativenumber
 
-" ============================================================================ "
-" ===                                 COC                                  === "
-" ============================================================================ "
-
-" Don't give completion messages like 'match 1 of 2'
-" or 'The only match'
-set shortmess+=c
+" This setting makes search case-insensitive when all characters in the string
+" being searched are lowercase. However, the search becomes case-sensitive if
+" it contains any capital letters. This makes searching more convenient.
+set ignorecase
+set smartcase
 
 " Backups
 set nobackup
@@ -80,6 +87,19 @@ set nowritebackup
 set cmdheight=2
 
 set updatetime=300
+
+" Don't give completion messages like 'match 1 of 2'
+" or 'The only match'
+set shortmess+=c
+
+" Use the clipboard as the default register
+set clipboard=unnamed
+
+" ============================================================================ "
+" ===                                 COC                                  === "
+" ============================================================================ "
+
+hi CocInfoSign  ctermfg=Blue guifg=#0EBFE9
 
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
@@ -99,8 +119,36 @@ inoremap <silent><expr> <TAB>
       \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
 
-"Close preview window when completion is done.
+" Close preview window when completion is done.
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+
+" Use <C-l> for trigger snippet expand.
+imap <C-l> <Plug>(coc-snippets-expand)
+
+" Use <C-j> for select text for visual placeholder of snippet.
+vmap <C-j> <Plug>(coc-snippets-select)
+
+" Use <C-j> for jump to next placeholder, it's default of coc.nvim
+let g:coc_snippet_next = '<c-j>'
+
+" Use <C-k> for jump to previous placeholder, it's default of coc.nvim
+let g:coc_snippet_prev = '<c-k>'
+
+" Use <C-j> for both expand and jump (make expand higher priority.)
+imap <C-j> <Plug>(coc-snippets-expand-jump)
+
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? coc#_select_confirm() :
+      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+let g:coc_snippet_next = '<tab>'
 
 " Remap keys for gotos
 nmap <silent> gd <Plug>(coc-definition)
@@ -108,20 +156,18 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
-" Open lazygit
-nnoremap <silent> <Leader>' :call OpenTerm('lazygit', 0.8)<CR>
+" Remap for rename current word
+nmap <leader>rn <Plug>(coc-rename)
 
-" Save file
-nnoremap <silent> <Leader>w! :write<CR>
+" Remap for format selected region
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
 
-" Reload vim config
-nmap <Leader>R :so $MYVIMRC<CR>
+" use `:SI` for organize import of current buffer
+command! -nargs=0 SI   :call     CocAction('runCommand', 'editor.action.organizeImport')
 
 " Use K to show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-nmap <Leader>p :FzfPreviewProjectFiles<CR>  
-nmap <Leader>F :FzfPreviewProjectGrep<CR>  
 
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
@@ -131,12 +177,65 @@ function! s:show_documentation()
   endif
 endfunction
 
-" Remap for rename current word
-nmap <leader>rn <Plug>(coc-rename)
+" ============================================================================ "
+" ===                             KEY MAPPINGS                             === "
+" ============================================================================ "
 
-" Remap for format selected region
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
+" Allow to save files you opened without write permissions via sudo
+cmap w!! w !sudo tee %
+
+noremap <silent> <Leader>Q :close<CR>
+
+" Select all lines
+nnoremap <C-A> ggVG<CR>
+nnoremap <C-S> :write<CR>
+nnoremap <C-Q> :BD<CR>
+nnoremap <C-V> :BB<CR>
+nnoremap <C-F> :BF<CR>
+
+" Replace word from 0 register
+nnoremap <C-p> cw<C-r>0<ESC>
+
+" Reload vim config
+nmap <Leader>R :so $MYVIMRC<CR>
+" Test auto reload vim config on save
+autocmd! bufwritepost .vimrc source %
+
+nmap <Leader>j :FzfPreviewProjectMruFiles<CR>
+nmap <Leader>k :FzfPreviewProjectGrep .<CR>
+nmap <leader>b :Fern . -drawer <CR>:set norelativenumber nonumber<CR>
+
+" Quicker window movement
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-h> <C-w>h
+nnoremap <C-l> <C-w>l
+
+" Bubble(move) single lines
+nmap <C-Up> :m .-2<CR>
+nmap <C-Down> :m  .+1<CR>
+
+" Bubble(move) multiple lines
+vnoremap <silent> <C-Up>  @='"zxk"zP`[V`]'<CR>
+vnoremap <silent> <C-Down>  @='"zx"zp`[V`]'<CR>
+
+" Snippets
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<c-l>"
+
+" Open the vimrc file anytime
+noremap <leader>rc :e $MYVIMRC<CR>
+noremap <leader>rz :e ~/.zshrc<CR>
+noremap <leader>rx :e ~/.config/kitty/kitty.conf<CR>
+
+" Quickscope
+let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
+highlight QuickScopePrimary guifg='#552b8c' gui=underline ctermfg=155 cterm=underline
+highlight QuickScopeSecondary guifg='#a001a0' gui=underline ctermfg=81 cterm=underline
+
+" Clear search highlight
+nnoremap <ESC> :noh<CR><ESC>
 
 augroup mygroup
   autocmd!
@@ -146,9 +245,6 @@ augroup mygroup
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
 
-" use `:SI` for organize import of current buffer
-command! -nargs=0 SI   :call     CocAction('runCommand', 'editor.action.organizeImport')
-
 " ============================================================================ "
 " ===                                UI                                    === "
 " ============================================================================ "
@@ -157,18 +253,8 @@ command! -nargs=0 SI   :call     CocAction('runCommand', 'editor.action.organize
 set termguicolors
 
 " ============================================================================ "
-" ===                             KEY MAPPINGS                             === "
-" ============================================================================ "
-
-" Allows you to save files you opened without write permissions via sudo
-cmap w!! w !sudo tee %
-
-" ============================================================================ "
 " ===                                 MISC.                                === "
 " ============================================================================ "
-
-" Automaticaly close nvim if NERDTree is only thing left open
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " === Search === "
 " ignore case when searching
@@ -251,40 +337,3 @@ function! Fzf_dev()
         \ 'window': 'call CreateCenteredFloatingWindow()'})
 
 endfunction
-function! LayoutTerm(size, orientation) abort
-  let timeout = 16.0
-  let animation_total = 150.0
-  let timer = {
-    \ 'size': a:size,
-    \ 'step': 1,
-    \ 'steps': animation_total / timeout
-  \}
-
-  if a:orientation == 'horizontal'
-    resize 1
-    function! timer.f(timer)
-      execute 'resize ' . string(&lines * self.size * (self.step / self.steps))
-      let self.step += 1
-    endfunction
-  else
-    vertical resize 1
-    function! timer.f(timer)
-      execute 'vertical resize ' . string(&columns * self.size * (self.step / self.steps))
-      let self.step += 1
-    endfunction
-  endif
-  call timer_start(float2nr(timeout), timer.f, {'repeat': float2nr(timer.steps)})
-endfunction
-
-" Open autoclosing terminal, with optional size and orientation
-function! OpenTerm(cmd, ...) abort
-  let orientation = get(a:, 2, 'horizontal')
-  if orientation == 'horizontal'
-    new | wincmd J
-  else
-    vnew | wincmd L
-  endif
-  call LayoutTerm(get(a:, 1, 0.5), orientation)
-  call termopen(a:cmd, {'on_exit': {j,c,e -> execute('if c == 0 | close | endif')}})
-endfunction
-
