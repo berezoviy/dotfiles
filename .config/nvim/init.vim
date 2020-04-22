@@ -12,6 +12,8 @@ call plug#begin(expand('~/.config/nvim/plugged'))
   Plug 'psliwka/vim-smoothie'                | " Nicer scrolling
 
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+"  Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
   
   " Tool Plugins
   Plug 'dstein64/vim-startuptime'        | " Measure startuptime
@@ -19,6 +21,9 @@ call plug#begin(expand('~/.config/nvim/plugged'))
   Plug 'lambdalisue/fern.vim'
   Plug 'lambdalisue/fern-renderer-devicons.vim'
   Plug 'unblevable/quick-scope'
+  Plug 'moll/vim-bbye'
+  Plug 'ap/vim-buftabline'
+  Plug 'easymotion/vim-easymotion'
   
   " Code Formatting Plugins {{{
   Plug 'editorconfig/editorconfig-vim'      | " Import tabs etc from editorconfig
@@ -31,8 +36,6 @@ call plug#begin(expand('~/.config/nvim/plugged'))
 
   Plug 'SirVer/ultisnips'
 
-  Plug 'ayu-theme/ayu-vim'
-  Plug 'morhetz/gruvbox'
   Plug 'yuki-ycino/fzf-preview.vim'
   Plug 'bogado/file-line'
   Plug 'shougo/neomru.vim'
@@ -40,9 +43,12 @@ call plug#begin(expand('~/.config/nvim/plugged'))
 
 call plug#end()
 
+let g:deoplete#enable_at_startup = 1
+
 let g:fern#renderer = "devicons"
 
 let g:gruvbox_contrast_light="hard"
+let g:airline_theme="papercolor"
 set background=light
 colorscheme gruvbox 
 " colorscheme gruvbox
@@ -72,6 +78,9 @@ set relativenumber
 " it contains any capital letters. This makes searching more convenient.
 set ignorecase
 set smartcase
+
+" Use the clipboard as the default register
+set clipboard=unnamed
 
 " ============================================================================ "
 " ===                                 COC                                  === "
@@ -138,6 +147,9 @@ function! s:check_back_space() abort
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
 let g:coc_snippet_next = '<tab>'
 " Remap keys for gotos
 nmap <silent> gd <Plug>(coc-definition)
@@ -147,13 +159,22 @@ nmap <silent> gr <Plug>(coc-references)
 
 " Save file
 nnoremap <silent> <Leader>w :write<CR>
-nnoremap <silent> <Leader>q :bd<CR>
-noremap <silent> <Leader>Q :close<CR>
+nnoremap <silent> <Leader>q :q<CR>
+" Select all lines
 nnoremap <C-A> ggVG<CR>
 nnoremap <C-S> :write<CR>
-nnoremap <C-Q> :bd<CR>
+nnoremap <C-W> :Bwipeout<CR>
+nnoremap <C-Q> :bufdo :Bwipeout<CR>
 nnoremap <C-V> :bp<CR>
 nnoremap <C-F> :bn<CR>
+
+nnoremap <C-J> <C-W>j
+nnoremap <C-K> <C-W>k
+nnoremap <C-L> <C-W>l
+nnoremap <C-H> <C-W>h
+
+" Clear search highlight
+nnoremap <ESC> :noh<CR><ESC>
 
 " Replace word from 0 register
 nnoremap <C-p> cw<C-r>0<ESC>
@@ -164,8 +185,9 @@ nmap <Leader>R :so $MYVIMRC<CR>
 " Use K to show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
-nmap <Leader>j :FzfPreviewProjectMruFiles<CR>  
+nmap <Leader>j :FzfPreviewProjectFiles<CR>  
 nmap <Leader>k :FzfPreviewProjectGrep .<CR>  
+nmap <Leader>l :FzfPreviewMrwFiles<CR>  
 nmap <leader>b :Fern . -drawer <CR>:set norelativenumber nonumber<CR>
 
 " Quicker window movement
