@@ -1,0 +1,39 @@
+snippet clg "console.log" b
+console.log(${1:"${2:value}"});
+endsnippet
+
+snippet imp "imports a module" b
+import {$2} from "$1";
+endsnippet
+
+snippet im "import from root project" b
+import {$2} from "~/$1";
+endsnippet
+
+snippet ima "import from antd" b
+import {$1} from "antd";
+endsnippet
+
+snippet af "arrow function (af)"
+(${1:argument}) => {
+	${VISUAL}$0
+}
+endsnippet
+
+snippet caf "const arrow function (af)"
+const ${1:function_name} = (${2:argument}) => {
+	${VISUAL}$0
+}
+endsnippet
+
+snippet rfc "React Functional Component" b
+import React from 'react';
+
+interface Props {
+
+}
+
+const ${1:`!v expand('%:t:r')`}: React.FC<Props> = ({${2}}) => {
+  return (<${3:div}>${4}</${3}>)
+}
+endsnippet
